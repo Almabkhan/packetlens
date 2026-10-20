@@ -77,23 +77,46 @@ th {{ background:#161b22; }}
 </body></html>"""
 
 
+
 def save_html_report(report: dict, path: str):
     parts = []
+
     for f in report["findings"]:
-        details = "".join(f"<div><strong>{k}:</strong> {v}</div>" for k, v in f.items()
-                           if k not in ("type", "severity", "description"))
+        severity = escape(str(f.get("severity", "info")))
+        finding_type = escape(
+            str(f.get("type", "unknown")).replace("_", " ")
+        )
+        description = escape(str(f.get("description", "")))
+
+        details = "".join(
+            f"<div><strong>{escape(str(k))}:</strong> "
+            f"{escape(str(v))}</div>"
+            for k, v in f.items()
+            if k not in ("type", "severity", "description")
+        )
+
         parts.append(
-            f'<div class="finding sev-{f["severity"]}"><strong>[{f["severity"].upper()}] '
-            f'{f["type"].replace("_", " ")}</strong><div>{f["description"]}</div>{details}</div>'
+            f'<div class="finding sev-{severity}">'
+            f"<strong>[{severity.upper()}] {finding_type}</strong>"
+            f"<div>{description}</div>{details}</div>"
         )
 
     html = HTML_TEMPLATE.format(
-        file=report["file"], timestamp=report["analyzed_at"],
-        risk_level=report["risk_level"], risk_score=report["risk_score"],
-        total_packets=report["summary"].get("total_packets", 0),
-        unique_hosts=report["summary"].get("unique_hosts", 0),
-        duration=report["summary"].get("duration_seconds", 0),
+        file=escape(str(report.get("file", ""))),
+        timestamp=escape(str(report.get("analyzed_at", ""))),
+        risk_level=escape(str(report.get("risk_level", "Low"))),
+        risk_score=escape(str(report.get("risk_score", 0))),
+        total_packets=escape(str(
+            report.get("summary", {}).get("total_packets", 0)
+        )),
+        unique_hosts=escape(str(
+            report.get("summary", {}).get("unique_hosts", 0)
+        )),
+        duration=escape(str(
+            report.get("summary", {}).get("duration_seconds", 0)
+        )),
         findings_html="\n".join(parts) if parts else "<p>No findings.</p>",
     )
+
     with open(path, "w", encoding="utf-8") as f:
         f.write(html)
