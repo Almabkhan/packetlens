@@ -87,7 +87,7 @@ pip install -r requirements.txt
 python -m pytest tests/ -v
 ```
 
-There are 14 of them, and they actually run against the generated test
+The project includes 19 automated tests covering analyzers and report generation, and they actually run against the generated test
 captures — not fake/mocked data. I also specifically tested that normal,
 boring traffic doesn't get flagged as anything, because a tool that
 cries wolf on everything isn't useful.
