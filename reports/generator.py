@@ -2,6 +2,7 @@
 
 import json
 from datetime import datetime, timezone
+from html import escape
 
 
 SEVERITY_WEIGHTS = {"critical": 10, "high": 7, "medium": 4, "low": 2, "info": 0}
