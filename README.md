@@ -47,7 +47,7 @@ something safe to test against:
 
 ```bash
 python samples/generate_samples.py
-python main.py samples/port_scan.pcap
+python main.py samples/plaintext_creds.pcap
 ```
 
 That should print something like this:
