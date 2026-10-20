@@ -18,10 +18,7 @@ machine really fast, that's basically the definition of a scan. I group
 packets by source/destination pair and check the port count against a
 time window.
 
-**Passwords sent in the clear** — old protocols like FTP and Telnet
-still send your username and password as plain text. If I see a `USER`
-or `PASS` command on port 21, or an HTTP Basic Auth header, I pull it
-out and show you exactly what was exposed.
+**Passwords sent in the clear** — some protocols, like FTP and POP3, can send usernames and passwords as plain text. If I see a `USER` or `PASS` command in FTP or POP3 traffic, or an HTTP Basic Authentication header, I check for exposed credentials and report the finding.
 
 **ARP spoofing** — this is the "two people claiming the same identity"
 attack. I track which MAC address claims which IP over ARP, and if two
