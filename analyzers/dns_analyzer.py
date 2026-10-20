@@ -24,13 +24,7 @@ def analyze_dns_traffic(packets: list) -> dict:
     for domain in set(queries):
         reasons = []
 
-                if any(
-            re.search(
-                rf"(?:^|[.-]){re.escape(keyword)}(?:[.-]|$)",
-                domain.lower()
-            )
-            for keyword in SUSPICIOUS_KEYWORDS
-        ):
+        if any(keyword in domain.lower() for keyword in SUSPICIOUS_KEYWORDS):
             reasons.append("contains a keyword commonly associated with malicious infrastructure")
 
         if len(domain) > 40:
